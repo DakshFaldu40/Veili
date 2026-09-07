@@ -1,0 +1,26 @@
+{
+  "manifest_version": 3,
+  "name": "Privacy Browser Agent",
+  "version": "1.0.0",
+  "description": "Understands the page locally, redacts PII before any network call, and executes AI actions in your browser.",
+  "permissions": ["activeTab", "storage", "scripting", "tabs"],
+  "host_permissions": ["<all_urls>"],
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_title": "Privacy Browser Agent"
+  },
+  "background": { "service_worker": "background/service-worker.js", "type": "module" },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": [
+        "privacy/piiDetector.js",
+        "privacy/redactor.js",
+        "privacy/privacyFirewall.js",
+        "agent/actionExecutor.js",
+        "content/content.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ]
+}

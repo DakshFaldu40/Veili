@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Create Your Account — NimbusPay</title>
+    <style>
+      body { margin: 0; font-family: system-ui, sans-serif; background: #0b1220; color: #e6eefc; display: flex; justify-content: center; padding: 48px 16px; }
+      .card { width: 460px; background: #111a2c; border: 1px solid #1f2c44; border-radius: 14px; padding: 28px; }
+      h1 { margin: 0 0 4px; font-size: 22px; }
+      p.sub { margin: 0 0 22px; color: #7f93b0; font-size: 14px; }
+      label { display: block; font-size: 12px; color: #9db0cc; margin: 14px 0 5px; letter-spacing: .04em; }
+      input, textarea { width: 100%; box-sizing: border-box; padding: 10px; border-radius: 8px; border: 1px solid #24344f; background: #0b1220; color: #e6eefc; font: inherit; }
+      button { width: 100%; margin-top: 22px; padding: 12px; border: 0; border-radius: 8px; background: #22d3ee; color: #04121a; font-weight: 700; font-size: 15px; cursor: pointer; }
+      #status { margin-top: 12px; text-align: center; color: #34d399; font-size: 14px; min-height: 20px; }
+    </style>
+  </head>
+  <body>
+    <form class="card" onsubmit="event.preventDefault()">
+      <h1>Create Your Account</h1>
+      <p class="sub">Demo page for the Privacy Browser Agent</p>
+
+      <label for="fullname">Full Name</label>
+      <input id="fullname" name="fullname" value="REDACTED" />
+
+      <label for="email">Email</label>
+      <input id="email" name="email" type="email" value="REDACTED@example.com" />
+
+      <label for="phone">Phone</label>
+      <input id="phone" name="phone" type="tel" value="+91 9876543210" />
+
+      <label for="password">Password</label>
+      <input id="password" name="password" type="password" value="REDACTED" />
+
+      <label for="address">Address</label>
+      <input id="address" name="address" value="Ahmedabad, Gujarat" />
+
+      <label for="card">Card Number</label>
+      <input id="card" name="cardnumber" value="4111 1111 1111 1111" />
+
+      <button id="submitBtn" type="submit" onclick="document.getElementById('status').textContent='✓ Submit Application clicked by the agent'">
+        Submit Application
+      </button>
+      <div id="status"></div>
+    </form>
+  </body>
+</html>
