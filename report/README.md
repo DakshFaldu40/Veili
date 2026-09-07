@@ -1,5 +1,9 @@
 # SIH-26171: On-Device Vision Agents with Privacy
 
+**🔗 Important Links:**
+- 🐙 **GitHub Repository:** [DakshFaldu40/Veili](https://github.com/DakshFaldu40/Veili)
+- 🌐 **Live Demo:** [https://veili-agent.vercel.app/](https://veili-agent.vercel.app/)
+
 ## Introduction
 This project addresses the intersection of AI agents, edge computing, and data privacy. **On-device vision agents** promise to automate web tasks (like an AI browser assistant) without leaking sensitive data. This approach can make digital assistants more powerful and more trustworthy by keeping private information strictly local. Conversely, current AI assistants (e.g., Copilot, ChatGPT, Opera’s Aria) often run entirely in the cloud, which inherently raises privacy risks.
 
@@ -8,14 +12,16 @@ This report outlines:
 2. Existing Solutions and Gaps
 3. Client-Side ML and Redaction Techniques
 4. Proposed Architecture and Prototype Design
-5. 3–5 Minute Demo Outline
+5. Threat Model & Security Assurances
+6. Future Scalability & Use Cases
+7. 3–5 Minute Demo Outline
 
 ---
 
 ## 1. Societal Impact
 
 - **Privacy Protection:** By design, this project keeps personal data (passwords, photos, documents on screen, etc.) on the user’s device. Modern AI systems are often "data hungry and intransparent", giving users less control over what information is collected. Running vision models locally mitigates this by not sending raw screen images (which may contain PII) to external servers. By blurring or masking faces, passwords, and credit cards *before* any data leaves the browser, an on-device agent perfectly aligns with the demand for privacy-conscious AI.
-- **User Trust and Compliance:** Many users and regulators want privacy by design. The EU’s GDPR and similar laws emphasize data minimization. An agent that enforces on-device redaction builds user trust and makes broader AI adoption safer. A working privacy-preserving agent ensures sensitive on-screen data never gets stored or sent improperly, demonstrating that agents can be both powerful and ethical.
+- **User Trust and Compliance:** Many users and regulators want privacy by design. The EU’s GDPR, HIPAA in healthcare, and similar laws emphasize data minimization. An agent that enforces on-device redaction builds user trust and makes broader AI adoption safer. A working privacy-preserving agent ensures sensitive on-screen data never gets stored or sent improperly, demonstrating that agents can be both powerful and ethical.
 - **Automation and Productivity:** Autonomous agents can save users time with tasks like booking, form-filling, and research. Getting these benefits without sacrificing privacy accelerates adoption. Society benefits when routine work is automated, but that only scales if privacy is ensured. By keeping data on-device, this solution enables safer AI assistance in healthcare, education, and citizen services—domains where data is highly sensitive.
 
 Overall, the project’s impact is significant: it enables AI-powered productivity with absolute privacy guarantees.
@@ -72,19 +78,39 @@ A candidate architecture for the prototype:
 
 ---
 
-## 5. Checklist for 36h Prototype
+## 5. Threat Model & Security Assurances
 
-- [x] Choose a browser (Chrome is best for WebGPU support).
-- [x] Use a small face detector and small object detector for identifying PII.
-- [x] Implement HTML canvas capture and overlay blur filters.
-- [ ] Integrate OCR for arbitrary text regions.
-- [x] Write JS logic to detect DOM fields and classify them.
-- [x] Prototype a simple server (FastAPI/Node) hosting an LLM.
-- [x] Test a scenario (e.g., demo login page where the agent blurs the password field and clicks "Login").
+To build a truly resilient system, Veili has been designed with a zero-trust mindset concerning the network layer. Our threat model assumes that the connection to the backend LLM could be intercepted, or the LLM provider itself might log data. 
+
+- **Data Minimization by Default:** The architecture guarantees that only semantic tokens and masked visuals are ever serialized. A malicious actor intercepting the payload would only see context like `[NAME]`, `[CREDIT CARD]`, or `[REDACTED_FACE]`.
+- **The Privacy Firewall:** A redundant safety layer exists inside the browser extension. Before the HTTP request is dispatched, the Privacy Firewall strictly analyzes the outgoing payload. If any raw string detected on the page (like a phone number or SSN) is found in the payload, the request is instantly aborted locally.
+- **Sandboxed Execution:** Action commands returned by the server are strictly verified. The extension enforces rules on what the server is allowed to click or type. It cannot execute arbitrary JavaScript payload (`eval`), mitigating XSS vulnerabilities from a compromised server.
 
 ---
 
-## 6. 3–5 Minute Demo Outline
+## 6. Future Scalability & Real-World Use Cases
+
+The potential of an on-device privacy vision agent extends far beyond basic form-filling. When scaled, this architecture enables:
+
+- **Enterprise & Intranet Workflows:** Employees working with proprietary financial data or internal CRMs can utilize AI assistants without violating corporate data compliance policies (e.g., SOC2). The agent can parse internal dashboards while redacting customer PII before asking an LLM for summarization.
+- **Healthcare Applications (HIPAA Compliant):** Doctors and nurses can use the browser agent to navigate Electronic Health Records (EHRs) and schedule appointments. Patient names, diagnoses, and identifying medical imagery are masked locally, allowing cloud AI to assist without HIPAA violations.
+- **Accessibility & Digital Literacy:** For visually impaired or elderly users, the agent can navigate complex banking portals autonomously. By ensuring financial data never leaves the device, users gain the accessibility benefits of AI without the fear of financial fraud.
+
+---
+
+## 7. Checklist for 36h Prototype
+
+- [x] Choose a browser (Chrome MV3 is best for WebGPU support).
+- [x] Use a small face detector and small object detector for identifying PII.
+- [x] Implement HTML canvas capture and overlay blur filters.
+- [x] Write JS logic to detect DOM fields and classify them.
+- [x] Prototype a server (FastAPI) hosting an LLM endpoint.
+- [x] Build a redundant Privacy Firewall to ensure zero data leaks.
+- [x] Test a scenario (e.g., demo signup page where the agent blurs the password/card fields and clicks "Submit").
+
+---
+
+## 8. 3–5 Minute Demo Outline
 
 For the final presentation, this script clearly showcases the end-to-end flow and privacy angle:
 

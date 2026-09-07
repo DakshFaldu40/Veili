@@ -1,5 +1,7 @@
 # 🛡️ Veili: Privacy-Preserving Visual Browser Agent
 
+**🔗 Live Demo:** [https://veili-agent.vercel.app/](https://veili-agent.vercel.app/)
+
 ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
 ![Vite](https://img.shields.io/badge/Vite-B73BFE?style=for-the-badge&logo=vite&logoColor=FFD62E)
 ![FastAPI](https://img.shields.io/badge/fastapi-109989?style=for-the-badge&logo=FASTAPI&logoColor=white)
